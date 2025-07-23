@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotton Bale Detection</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: url('/static/3409297.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: rgba(18, 31, 56, 0.83);
+            border-radius: 24px;
+            box-shadow: 0 16px 56px 0 rgba(20,44,88,0.18), 0 2px 22px 0 #22e0ff21 inset;
+            border: 2px solid rgba(80,200,255,0.13);
+            backdrop-filter: blur(28px) saturate(1.22);
+            padding: 56px 54px 40px 54px;
+            max-width: 430px;
+            width: 100%;
+            min-height: 560px;
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.7s cubic-bezier(.42,1.6,.3,1) 0.06s both;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0;}
+            to   { transform: translateY(0); opacity: 1;}
+        }
+        .user {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 38px;
+            border: 3px solid #00faffcc;
+            box-shadow: 0 0 38px #00faff33, 0 3px 18px #0ff4ff22;
+            background: #172645;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .form-control {
+            background: rgba(255,255,255,0.10);
+            border: 2px solid rgba(255,255,255,0.14);
+            color: #e8f6ff;
+            border-radius: 14px;
+            font-size: 1.13rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 19px 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 3px 18px rgba(24,35,66,0.03);
+            transition: border 0.23s, box-shadow 0.23s, background 0.17s;
+        }
+        .form-control:focus {
+            outline: none;
+            border: 2px solid #22cfff;
+            background: rgba(255,255,255,0.17);
+            box-shadow: 0 0 10px #20e3ff60;
+            color: #fff;
+        }
+        .form-control::placeholder {
+            color: #c6eaff;
+            opacity: 0.82;
+            font-weight: 400;
+            letter-spacing: .10em;
+        }
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(90deg, #ff5353 12%, #e84118 88%);
+            border: none;
+            padding: 18px 0;
+            font-size: 1.23rem;
+            font-weight: 700;
+            letter-spacing: 0.9px;
+            border-radius: 13px;
+            box-shadow: 0 6px 30px 0 rgba(232,65,24,0.16);
+            width: 100%;
+            color: #fff;
+            transition: transform 0.18s, box-shadow 0.22s, background 0.19s;
+        }
+        .btn-primary:active,
+        .btn-primary:focus,
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #e84118 15%, #ff5353 100%);
+            box-shadow: 0 12px 44px 0 rgba(255,93,70,0.19);
+            transform: scale(1.035);
+            color: #fff;
+        }
+        .btn-primary i {
+            transition: transform 0.21s;
+        }
+        .btn-primary:hover i {
+            transform: translateX(7px) scale(1.18);
+        }
+        .footer {
+            margin-top: 42px;
+            width: 100%;
+            text-align: center;
+            font-size: 13.5px;
+            color: #b8e6ff;
+            opacity: 0.85;
+            letter-spacing: .09em;
+            user-select: none;
+        }
+        .alert {
+            margin-bottom: 20px;
+            border-radius: 11px;
+            font-size: 1.08rem;
+        }
+        .alert-success {
+            background: linear-gradient(90deg, rgba(40,167,69,0.93), rgba(50,219,79,0.83));
+            color: white;
+        }
+        .alert-error {
+            background: linear-gradient(90deg, rgba(220,53,69,0.9), rgba(240,65,85,0.8));
+            color: white;
+        }
+        @media (max-width: 600px) {
+            body {
+                align-items: flex-start;
+                padding-top: 8vw;
+            }
+            .login-card {
+                max-width: 97vw;
+                padding: 18px 6vw 18px 6vw;
+                min-height: 400px;
+            }
+            .user {
+                width: 74px;
+                height: 74px;
+                margin-bottom: 23px;
+            }
+            .form-control {
+                padding: 14px 8px;
+                font-size: 1rem;
+            }
+            .footer { font-size: 11px; margin-top: 20px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <img src="{{ url_for('static', filename='Scan.gif') }}" alt="User Image" class="user mb-3">
+        {% if error %}
+            <div class="alert alert-error" style="margin-bottom: 24px;">
+                {{ error }}
+            </div>
+        {% endif %}
+        <form method="POST">
+            <div class="mb-3">
+                <label for="username" class="visually-hidden">Username</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="Username" required aria-label="Username" autocomplete="username">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="visually-hidden">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required aria-label="Password" autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </form>
+        <div class="footer">
+            © 2025 AKS IQ Private Limited | All Rights Reserved | APP TESTING 0.1
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
