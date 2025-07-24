@@ -371,9 +371,9 @@ def wait_for_stream(url, timeout=15):
     return False
 
 
-def log_event(object_id, event_type, anomaly_detected=False, anomaly_type=None):
+def log_event(name,object_id, event_type, anomaly_detected=False, anomaly_type=None):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log_msg = f"{timestamp} - {event_type}"
+    log_msg = f"{timestamp} - {name} {event_type}"
     logger.info(log_msg)
     shared_state["logs"].append(log_msg)
 
@@ -471,7 +471,11 @@ def start_yolo_detection():
                         if check_sum > 50:
                             shared_state["counter"] += 1
                             obj["counted"] = True
-                            log_event(obj_id, f"Bale Detected. Total: {shared_state['counter']}")
+                            # log_event(obj_id, f"Bale Detected. Total: {shared_state['counter']}")
+                            if name == "cottonbale ":
+                                log_event(name,obj_id, f" Detected. Total: {shared_state['counter']}")
+                            else:
+                                log_event(name,obj_id, f" Detected. Total: {shared_state['counter']}")
 
                 # Draw bounding box
                 if name == "coveredbale":

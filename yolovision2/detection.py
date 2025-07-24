@@ -25,9 +25,9 @@ def wait_for_stream(url, timeout=15):
     return False
  
  
-def log_event(object_id, event_type, anomaly_detected=False, anomaly_type=None):
+def log_event(name,object_id, event_type, anomaly_detected=False, anomaly_type=None):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log_msg = f"{timestamp} - Bale Detected"
+    log_msg = f"{timestamp} - {name} Detected"
     logger.info(log_msg)
     shared_state2["logs"].append(log_msg)
  
@@ -154,6 +154,7 @@ def start_yolo_detection2():
             ids = results[0].boxes.id.cpu().numpy().astype(int)
             classes = results[0].boxes.cls.cpu().numpy()
             class_names = results[0].names
+            print(class_names)
 
             for box, obj_id, cls_id in zip(boxes, ids, classes):
                 name = class_names[int(cls_id)].lower()
@@ -166,12 +167,15 @@ def start_yolo_detection2():
 
                 # Initialize new objects
                 if obj_id not in tracked_objects:
+                    # if name == "coveredbale":
+                    #     log_event(obj_id, f"Covered Bale Detected. Total: {shared_state2['counter']}")
+                    #     continue
                     if datetime.now() == temp_time:
                         continue
                     if cy < 300:
                         continue
                     temp_time = datetime.now()
-                    side = "RIGHT" if cy > CENTER_LINE_X else "LEFT"
+                    side = "BOTTOM" if cy > CENTER_LINE_X else "TOP"
                     tracked_objects[obj_id] = {
                         "first_x": cy,
                         "current_x": cy,
@@ -199,7 +203,10 @@ def start_yolo_detection2():
                         if check_sum > 15:
                             shared_state2["counter"] += 1
                             obj["counted"] = True
-                            log_event(obj_id, f"Bale Detected. Total: {shared_state2['counter']}")
+                            if name == "cottonbale ":
+                                log_event(name,obj_id, f"Bale Detected. Total: {shared_state2['counter']}")
+                            else:
+                                log_event(name,obj_id, f"Covered Bale Detected. Total: {shared_state2['counter']}")
                 # Draw bounding box
                 if name == "coveredbale":
                     color = (0, 0, 255) if not obj["counted"] else (255, 0, 255)  # Red if not counted, magenta if counted
