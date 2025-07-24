@@ -4,7 +4,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # print(BASE_DIR,"sssssssssssss")
-MODEL_PATH = r"D:/Demo Code/model/Cam1Model.pt"
+MODEL_PATH = r"model\Cam1Model.pt"
 STREAM_URL = "http://localhost:9000/video"  # <--- this line must exist
 STREAM_URL2 = "http://localhost:7000/video"  # <--- this line must exist
 FLASK_PORT = 7861

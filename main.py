@@ -29,7 +29,7 @@ def kill_process_on_port(port):
         print(f"Error checking port {port}: {e}")
 
 if __name__ == "__main__":
-    ports = [9000,7862,7863,7860,7000,7861,7864]
+    ports = [9000,7862,7863,7860,7000,7861,7864,9000]
     for port in ports:
         kill_process_on_port(port)
 
