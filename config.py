@@ -7,6 +7,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = r"C:\Users\Asim\Desktop\CottonBale Project\model\BothScenerio.pt"
 STREAM_URL = "http://localhost:9000/video"  # <--- this line must exist
 STREAM_URL2 = "http://localhost:7000/video"  # <--- this line must exist
+# STREAM_URL2 = "http://127.0.0.1:8555/stream"  # <--- this line must exist
 FLASK_PORT = 7861
 GRADIO_PORT = 7860
 LINE_IN_Y = 100

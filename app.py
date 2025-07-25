@@ -356,7 +356,7 @@ def handle_info_submission(name, password, link, *args):
     if stream_process is None or stream_process.poll() is not None:
         logger.info("Starting stream_handler.py")
         stream_process = subprocess.Popen(
-            [sys.executable, "stream_handler.py"],
+            [sys.executable, "z.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
